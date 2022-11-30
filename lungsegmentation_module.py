@@ -131,84 +131,16 @@ def segment_lesion_area(filename_nifti,algorithm_name='',output_directory='./'):
     
 
 
-# In[ ]:
-
-
-# master_directory='/storage1/fs1/dharr/Active/ATUL/PROJECTS/LUNGS/DATA'
-# /storage1/fs1/dharr/Active/ATUL/PROJECTS/LUNGS/DATA/Lungs/RENAMEDUNIQUE/FailedRound1/NewFiles directory_name='/home/atul/Documents/KAGGLE/datasets/NBI_DATASET/manifest-1586193031612/NSCLC-Radiomics/niigzfiles'
-directory_name=sys.argv[1] #os.path.join(master_directory,'Lungs/RENAMEDUNIQUE') #/FailedRound2/NewFiles') #'/media/atul/AC0095E80095BA32/WASHU_WORK/PROJECTS/LUNGS/DATA/FromPorche/Lungs' #'../LUNG/DATA/Prone_study' #####'/home/atul/Documents/LUNG/DATA'
-# subdirectories=glob.glob(os.path.join(directory_name,'*/')) #"/path/to/directory/*/")
-
-
+INPUT=sys.argv[1]
 output_directory=sys.argv[2] ##os.path.join(directory_name,'lungmask') #'output_directory1') 
 command="rm  -r  " + output_directory + "/*" 
 subprocess.call(command,shell=True)
-# command="mkdir -p  " + output_directory  
-# subprocess.call(command,shell=True)
-#'/media/atul/AC0095E80095BA32/WASHU_WORK/PROJECTS/LUNGS/DATA/FromPorche/output_directory'
+
+
 output_file_csv=os.path.join(output_directory,'CT_ID_and_ateleactasis_volume.csv')
-# print(subdirectories)
-# print(files_name)
-file_counter=0
-# cuda.select_device(0)
-## cuda.close()
+
 atelectasis_percentage_list=[]
-#atelectasis_percentage_list.append(['atelectasis_percentage','total_lung_voxel','total_atelectasis_voxel'])
-# for each_dir in subdirectories:
-files_name=reversed(glob.glob(os.path.join(directory_name,"*.nii*")))
-
-# print(each_dir)
-counter=0
-for INPUT in files_name:
-    print(INPUT)
-    if counter == 0: 
-#         counter=counter+1
-    #     if  ("LUNG_WINDOW" not in INPUT) and ("MRI" not in INPUT) and ("Volume" not in INPUT) and file_counter<3: #'1657_' in INPUT and 
-    # #             file_counter=file_counter+1
-    #         print(INPUT)
-        try:
-            atelectasis_percentage,total_lung_voxel,total_atelectasis_voxel=segment_lesion_area(INPUT,'LTRCLobes_R231',output_directory)
-            atelectasis_percentage_list.append([os.path.basename(INPUT),atelectasis_percentage,total_lung_voxel,total_atelectasis_voxel])
-    #                 atelectasis_percentage_list.append(['atelectasis_percentage','total_lung_voxel','total_atelectasis_voxel'])
-        except :
-            print("Exception")
-            continue 
-    #             device = cuda.get_current_device()
-    #             device.reset()
-    #         device = cuda.get_current_device()
-    #         device.reset()
-    #        cuda.select_device(0)
-    #        cuda.close()
-    #        cuda.select_device(0)
-
-
-    #     INPUT="/home/atul/Documents/LUNG/DATA/SAH_90_02182015_PE_1.0_B20f_20150218212130_4.nii"
-    # input_image = sitk.ReadImage(INPUT)
-    # segmentation = mask.apply(input_image)  # default model is U-net(R231)
+atelectasis_percentage,total_lung_voxel,total_atelectasis_voxel=segment_lesion_area(INPUT,'LTRCLobes_R231',output_directory)
 atelectasis_percentage_df=pd.DataFrame(atelectasis_percentage_list)
 atelectasis_percentage_df.columns =['Filename','atelectasis_percentage','total_lung_voxel','total_atelectasis_voxel']
 atelectasis_percentage_df.to_csv(output_file_csv,index=False)
-
-# In[ ]:
-
-
-# np.sum(segmentation)
-# cuda.select_device(0)
-# handle=''
-
-# cuda.cudadrv.driver.Context(0,handle).get_memory_info()[0]
-# 261441/1650672  * 100
-
-
-# In[ ]:
-
-
-# for x in range(segmentation.shape[2]):
-# plot_sample([segmentation[20,:,:]*255])
-
-
-# In[ ]:
-
-
-# percentage_atel={'AFF2485_20180630_0132':0.12,
-
